@@ -68,6 +68,7 @@
                 </configuration>
             </plugin>
         </plugins>
+        <finalName>devops-integration</finalName>
     </build>
 
 </project>
