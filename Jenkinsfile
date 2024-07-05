@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_TAG = "v3"
+        IMAGE_TAG = "v1"
     }
 
     tools {
@@ -20,7 +20,7 @@ pipeline {
         stage('Clean old docker image') {
             steps {
                 script {
-                    sh 'docker rmi -f lgbptit/devops-integration || true'
+                    sh 'docker rmi -f lgbptit/devops-integration:v2 || true'
                 }
             }
         }
