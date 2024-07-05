@@ -56,7 +56,7 @@ pipeline {
         stage('Clean old docker image') {
             steps {
                 script {
-                    sh 'docker rmi -f lgbptit/devops-integration:v1 || true'
+                    sh 'docker rmi -f lgbptit/devops-integration:v0 || true'
                 }
             }
         }
