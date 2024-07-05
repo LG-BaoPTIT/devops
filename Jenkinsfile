@@ -11,6 +11,13 @@ pipeline{
                sh 'mvn clean install'
            }
        }
+       stage("Clean old docker image"){
+            steps{
+                script{
+                    sh 'docker rmi -f lgbptit/devops-integration || true'
+                }
+            }
+       }
        stage('Build docker image'){
             steps{
                 script{
@@ -27,6 +34,16 @@ pipeline{
                     sh 'docker push lgbptit/devops-integration'
                }
            }
+       }
+
+       stage('Run docker container'){
+			steps{
+				script{
+					  sh 'docker stop devops-container || true'
+                      sh 'docker rm devops-container || true'
+                      sh 'docker run -d --name devops-container -p 9090:9090 lgbptit/devops-integration'
+				}
+			}
        }
 
     }
