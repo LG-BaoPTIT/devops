@@ -17,6 +17,15 @@ pipeline {
             }
         }
 
+         stage('Stop and remove container') {
+                    steps {
+                        script {
+                            sh 'docker stop devops-container || true'
+                            sh 'docker rm devops-container || true'
+                        }
+                    }
+                }
+
         stage('Clean old docker image') {
             steps {
                 script {
@@ -47,8 +56,6 @@ pipeline {
         stage('Run docker container') {
             steps {
                 script {
-                    sh 'docker stop devops-container || true'
-                    sh 'docker rm devops-container || true'
                     sh "docker run -d --name devops-container -p 9090:9090 lgbptit/devops-integration:${IMAGE_TAG}"
                 }
             }
