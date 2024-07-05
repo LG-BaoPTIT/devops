@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_TAG = "v1"
+        IMAGE_TAG = "v4.0.0"
     }
 
     tools {
@@ -36,7 +36,7 @@ pipeline {
             }
         }
 
-         stage('Stop and remove container') {
+         stage('Stop and remove old container') {
             steps {
                 script {
                     sh 'docker stop devops-container || true'
@@ -56,7 +56,7 @@ pipeline {
         stage('Clean old docker image') {
             steps {
                 script {
-                    sh 'docker rmi -f lgbptit/devops-integration:v0 || true'
+                    sh 'docker rmi -f lgbptit/devops-integration:v1 || true'
                 }
             }
         }
