@@ -17,23 +17,6 @@ pipeline {
             }
         }
 
-         stage('Stop and remove container') {
-                    steps {
-                        script {
-                            sh 'docker stop devops-container || true'
-                            sh 'docker rm devops-container || true'
-                        }
-                    }
-                }
-
-        stage('Clean old docker image') {
-            steps {
-                script {
-                    sh 'docker rmi -f lgbptit/devops-integration:v2 || true'
-                }
-            }
-        }
-
         stage('Build docker image') {
             steps {
                 script {
@@ -53,6 +36,15 @@ pipeline {
             }
         }
 
+         stage('Stop and remove container') {
+            steps {
+                script {
+                    sh 'docker stop devops-container || true'
+                    sh 'docker rm devops-container || true'
+                }
+            }
+         }
+
         stage('Run docker container') {
             steps {
                 script {
@@ -60,5 +52,14 @@ pipeline {
                 }
             }
         }
+
+        stage('Clean old docker image') {
+            steps {
+                script {
+                    sh 'docker rmi -f lgbptit/devops-integration:v1 || true'
+                }
+            }
+        }
+
     }
 }
