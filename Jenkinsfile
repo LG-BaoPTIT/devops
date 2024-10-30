@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_TAG = "v4.0.0"
+        IMAGE_TAG = "${BUILD_NUMBER}"
     }
 
     tools {
@@ -28,8 +28,8 @@ pipeline {
         stage('Push image to Hub') {
             steps {
                 script {
-                    withCredentials([string(credentialsId: 'dockerhup-pwd', variable: 'dockerhuppwd')]) {
-                        sh "docker login -u lgbptit -p ${dockerhuppwd}"
+                    withCredentials([string(credentialsId: 'dockerhub-pwd', variable: 'dockerhubpwd')]) {
+                        sh "docker login -u lgbptit -p ${dockerhubpwd}"
                         sh "docker push lgbptit/devops-integration:${IMAGE_TAG}"
                     }
                 }
@@ -56,10 +56,10 @@ pipeline {
         stage('Clean old docker image') {
             steps {
                 script {
-                    sh 'docker rmi -f lgbptit/devops-integration:v1 || true'
+                    def previousBuildTag = (BUILD_NUMBER.toInteger() - 1).toString()
+                    sh "docker rmi -f lgbptit/devops-integration:${previousBuildTag} || true"
                 }
             }
         }
-
     }
 }
